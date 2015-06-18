@@ -1,0 +1,145 @@
+checking for equality 
+(= 1 1)
+true
+(= 1 2 ) 
+false
+hashmap 
+(get <hash> key)
+(get {:a 0 :b "sam"} :b)
+clojure-app.core=> (:a {:a 1 :b 2 :c 3})
+1
+clojure-app.core=> (get {:a 1 :b 2 :c 3} :a)
+1
+clojure-app.core=> 
+;; Here's a list - note the preceding single quote : like linkedlist
+'(1 2 3 4)
+(nth '(100 200 300 400) 3)
+set with #
+(set [3 3 3 4 4]) 
+#{4 3}
+
+if of form 
+(operator operand1 operand2 … )
+clojure-app.core=> (defn printme 
+              #_=> "retuns the name passed in with hello"
+              #_=> [name]
+              #_=> (str "hello" name "!. Good morning")
+              #_=> )
+#'clojure-app.core/printme
+clojure-app.core=> (printme sam)
+"hello[\"1\" \"2\" \"3\"]!. Good morning"
+clojure-app.core=> (printme "sam")
+"hellosam!. Good morning"
+clojure-app.core=> (doc printme)
+-------------------------
+clojure-app.core/printme
+([name])
+  retuns the name passed in with hello
+nil
+
+clojure-app.core=> 
+
+
+Destructuring : more details@ http://www.braveclojure.com/do-things/
+
+When destructuring a vector or list, you can name as many elements as you want and also use rest params:
+
+(defn chooser
+  [[first-choice second-choice & unimportant-choices]]
+  (println (str "Your first choice is: " first-choice))
+  (println (str "Your second choice is: " second-choice))
+  (println (str "We're ignoring the rest of your choices. "
+                "Here they are in case you need to cry over them: "
+                (clojure.string/join ", " unimportant-choices))))
+(chooser ["Marmalade", "Handsome Jack", "Pigpen", "Aquaman"])
+; => 
+; Your first choice is: Marmalade
+; Your second choice is: Handsome Jack
+; We're ignoring the rest of your choices. Here they are in case \
+; you need to cry over them: Pigpen, Aquaman
+writing a simple function
+(defn checkLimit [number] (if (> number 6) "bigger than 6" "smaller than 6”))
+#'clojure-app.core/checkLimit
+clojure-app.core=> (checkLimit 1)
+"smaller than 6"
+clojure-app.core=> (checkLimit 10)
+"bigger than 6"
+
+
+sample nested type variable
+clojure-app.core=> (def asym-hobbit-body-parts [{:name "head" :size 3}
+              #_=>                              {:name "left-eye" :size 1}])
+#'clojure-app.core/asym-hobbit-body-parts
+clojure-app.core=> asym-hobbit-body-parts
+[{:name "head", :size 3} {:name "left-eye", :size 1}]
+clojure-app.core=> (first asym-hobbit-body-parts)
+{:name "head", :size 3}
+clojure-app.core=> (:name (first asym-hobbit-body-parts))
+"head"
+clojure-app.core=> (:name (first asym-hobbit-body-parts) "no")
+"head"
+clojure-app.core=> (:name1 (first asym-hobbit-body-parts) "no")
+“no"
+
+
+Writing recursive function
+(defn recursive-printer
+  (
+        []    
+        (recursive-printer 0)
+  )
+  (
+        [iteration] 
+        (println (str "Iteration " iteration))
+        (
+                if (> iteration 3)
+                        (println "Goodbye!")
+                        (recursive-printer (inc iteration))
+        )
+  )
+)
+
+
+(recursive-printer) 
+
+same written using loop
+(loop [iteration 0]
+  (println (str "Iteration " iteration))
+  (if (> iteration 3)
+    (println "Goodbye!")
+    (recur (inc iteration))
+  )
+)  
+
+regex 
+ (defn f1? ([] "test") ([part] (re-find #"^sa" part) ))
+
+VIEWING TRAVIS build failures after pull request
+
+https://groups.google.com/forum/#!topic/clojure/HJpG_6AaEUA
+
+simple factorial recursion
+(defn fact [i] 
+    (if (zero? i)
+        1
+        (* i (fact (dec i)))
+    )
+)
+namespace for testing UNIT TEST
+(clojure.test/is (= 4 (+ 2 2)))
+
+meta 
+(def myname ^:ThisisMyname [1 2 3 ])
+#'clojure-app.core/myname
+clojure-app.core=> myname
+[1 2 3]
+clojure-app.core=> (meta myname)
+{:ThisisMyname true}
+
+(meta myname)
+
+clojure-app.core=> (defn foo [^String s] (.charAt s 1)) ⇐ forcing foo argument to be String. if u pass non string u get this below
+#'clojure-app.core/foo
+clojure-app.core=> (foo 2)
+ClassCastException java.lang.Long cannot be cast to java.lang.String  clojure-app.core/foo (form-init1296314943454011186.clj:1)
+
